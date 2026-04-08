@@ -359,20 +359,17 @@ flowchart TB
         M["Memory 模块\n不受影响\n（Speculation 不写 context）"]
         C["Compaction 模块\n不受影响\n（缓存不参与压缩）"]
         F["FileHistory 模块\n提供数据\n（recentEdits 触发预测）"]
-        G["GitNexus\n被调用\n（impact/search/diff）"]
     end
 
     F -->|"recentEdits"| Pred
     Pred --> Exec
     Exec --> Cache
-    Exec -->|"调用"| G
     Cache -->|"命中时返回"| QueryLoop["Query Loop"]
 ```
 
 **Speculation 对其他模块的影响：**
 - Memory、Compaction：**无影响**（预取结果不注入 context）
 - FileHistory：**读取数据**（用于触发预测规则）
-- GitNexus：**被调用**（执行实际的代码分析）
 
 ---
 
